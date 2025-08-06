@@ -1,25 +1,27 @@
 import { useReducer, useState } from "react"
 import counReducer from "./reducers/countReducer";
+import formReducer from "./reducers/formReducer";
 
 function App() {
 
   // variabile di stato per gestire il contatore 
   const [count, dispatch] = useReducer(counReducer, 0);
 
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [formData, dispatchForm] = useReducer(formReducer, { name: '', email: '', password: '' })
 
   function handleForm(e) {
     e.preventDefault();
-    setName('');
-    setEmail('');
-    setPassword('');
+    dispatchForm({ type: 'reset' });
+
     console.log('Ho inviato i dati');
-    console.log({
-      name,
-      email,
-      password
+    console.log(formData)
+  }
+
+  function handleChangeInput(e) {
+    dispatchForm({
+      type: 'update_field',
+      field: e.target.name,
+      value: e.target.value
     })
   }
 
@@ -35,24 +37,27 @@ function App() {
         <label>Inserisci il nome
           <input type="text"
             placeholder="Nome"
-            value={name}
-            onChange={e => setName(e.target.value)} />
+            name="name"
+            value={formData.name}
+            onChange={handleChangeInput} />
         </label>
 
         <label>
           Inserisci l'email
           <input type="text"
             placeholder="Email"
-            value={email}
-            onChange={e => setEmail(e.target.value)} />
+            name="email"
+            value={formData.email}
+            onChange={handleChangeInput} />
         </label>
 
         <label>
           Inserisci la password
           <input type="password"
             placeholder="Password"
-            value={password}
-            onChange={e => setPassword(e.target.value)}
+            name="password"
+            value={formData.password}
+            onChange={handleChangeInput}
           />
         </label>
         <button type="submit">Invia i tuoi dati</button>
