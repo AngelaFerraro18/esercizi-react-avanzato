@@ -1,6 +1,7 @@
 import { useReducer, useState } from "react"
 import counReducer from "./reducers/countReducer";
 import formReducer from "./reducers/formReducer";
+import taskReducer from "./reducers/taskReducer";
 
 function App() {
 
@@ -25,7 +26,8 @@ function App() {
     })
   }
 
-  const [todos, setTodos] = useState([]);
+  //variabili di stato per inserimento tasks
+  const [todos, dispatchTodo] = useReducer(taskReducer, []);
   const [newTodo, setNewTodo] = useState('');
 
 
@@ -34,23 +36,17 @@ function App() {
 
     if (newTodo.trim() === '') return;
 
-    const newTask = {
-      id: Date.now(),
-      text: newTodo,
-      completed: false
-    };
+    dispatchTodo({ type: 'add', text: newTodo });
 
-    setTodos([...todos, newTask]);
     setNewTodo('');
   }
 
   function handleToggle(id) {
-    setTodos(prev => prev.map(todo => todo.id === id ? { ...todo, completed: !todo.completed } : todo)
-    )
+    dispatchTodo({ type: 'toggle', id })
   }
 
   function handleRemove(id) {
-    setTodos(prev => prev.filter(todo => todo.id !== id))
+    dispatchTodo({ type: 'remove', id })
   }
 
   return (
