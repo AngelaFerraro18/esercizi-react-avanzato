@@ -26,3 +26,21 @@ Suggerimenti:
 Stato iniziale: { name: "", email: "", password: "" }
 
 Azione: { type: 'update', field: 'name', value: 'Mario' }
+
+
+# ESERCIZIO 3: Todo List con useReducer
+Obiettivo: creare una lista di todo con aggiunta, rimozione e toggle "completato".
+
+Requisiti:
+Aggiungi todo
+
+Rimuovi todo
+
+Marca come completato/non completato
+
+Stato:
+js
+Copia
+Modifica
+[{ id: 1, text: "Studiare React", completed: false }, ...]
+

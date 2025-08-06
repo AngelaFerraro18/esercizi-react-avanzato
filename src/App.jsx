@@ -25,6 +25,34 @@ function App() {
     })
   }
 
+  const [todos, setTodos] = useState([]);
+  const [newTodo, setNewTodo] = useState('');
+
+
+  function formTasks(e) {
+    e.preventDefault();
+
+    if (newTodo.trim() === '') return;
+
+    const newTask = {
+      id: Date.now(),
+      text: newTodo,
+      completed: false
+    };
+
+    setTodos([...todos, newTask]);
+    setNewTodo('');
+  }
+
+  function handleToggle(id) {
+    setTodos(prev => prev.map(todo => todo.id === id ? { ...todo, completed: !todo.completed } : todo)
+    )
+  }
+
+  function handleRemove(id) {
+    setTodos(prev => prev.filter(todo => todo.id !== id))
+  }
+
   return (
     <>
       <p>{count}</p>
@@ -62,6 +90,27 @@ function App() {
         </label>
         <button type="submit">Invia i tuoi dati</button>
       </form>
+
+
+      <form onSubmit={formTasks}>
+        <label>
+          Inserisci il testo
+          <input type="text"
+            placeholder="Testo"
+            value={newTodo}
+            onChange={e => setNewTodo(e.target.value)}
+          />
+
+          <button type="submit">Aggiungi task</button>
+        </label>
+      </form>
+
+      <ul>
+        {todos.map(t => <li key={t.id}>
+          <p onClick={() => handleToggle(t.id)}>{t.completed ? "✅ " : "❌ "}{t.text}</p>
+          <button onClick={() => handleRemove(t.id)}>Rimuovi</button>
+        </li>)}
+      </ul>
     </>
   )
 }
